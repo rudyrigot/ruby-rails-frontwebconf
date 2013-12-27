@@ -9,8 +9,69 @@ body {
 	margin-top: 50px;
 	margin-bottom: 80px;
 }
+#footer #footersponsors li {
+	margin-bottom: 5px;
+	text-align: center;
+}
+#footer #footersfooter {
+	border-top: 1px solid #eee;
+	padding-top: 10px;
+	margin-top: 15px;
+}
 
 /* Homepage */
 article#home {
 	margin-top: 20px;
+}
+article#home #introduction h1 {
+	font-size: 1.5em;
+}
+article#home #introduction p.dateplace {
+	font-style: italic;
+	font-size: 0.7em;
+	text-align: right;
+	margin-bottom: 20px;
+}
+article#home #introduction p.description {
+	font-size: 0.7em;
+}
+article#home #introduction p.cta {
+	text-align: center;
+	margin-top: 20px;
+}
+
+@media (min-width: 992px) {
+	article#home #introduction h1 {
+		font-size: 1.8em;
+	}
+	article#home #introduction p.dateplace {
+		font-size: 1em;
+	}
+	article#home #introduction p.description {
+		font-size: 0.9em;
+	}
+}
+@media (min-width: 1200px) {
+	article#home #introduction h1 {
+		font-size: 2.2em;
+	}
+}
+
+article#home h2 {
+	margin: 50px 0 40px;
+	padding-top: 40px;
+	border-top: 1px solid #eeeeee;
+}
+
+article#home .speakers {
+	text-align: center;
+}
+article#home .speakers img {
+	max-width: 100%;
+}
+article#home .sponsors {
+	text-align: center;
+}
+article#home .sponsors li {
+	margin-bottom: 5px;
 }

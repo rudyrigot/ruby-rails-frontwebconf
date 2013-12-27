@@ -67,8 +67,38 @@
 
 <div class="container">
   <footer id="footer">
-    <p>FrontWebConf is an example website to be used freely on top of the <a href="http://prismic.io">prismic.io</a> writing-room and content query API.</p>
-    <p>
+    <div class="row">
+      <div class="col-sm-3">
+        <h5>Main sponsors</h5>
+        <ul id="footersponsors" class="list-unstyled">
+          <li><a href="#"><img src="http://dummyimage.com/150x75/000/fff" alt="John Boelyn"></a></li>
+          <li><a href="#"><img src="http://dummyimage.com/150x75/000/fff" alt="John Boelyn"></a></li>
+        </ul>
+      </div>
+      <div class="col-sm-3">
+        <h5>Keep in touch</h5>
+        <ul>
+          <li><a href="#">Twitter</a></li>
+          <li><a href="#">Lanyrd</a></li>
+          <li><a href="#">Newsletter</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Become a sponsor</a></li>
+          <li><a href="#">Become a speaker</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <h5>Latest news</h5>
+        <ul>
+          <li><a href="#">John Beolyn: "Why you should look forward to my talk"</a></li>
+          <li><a href="#">John Beolyn: "Why you should look forward to my talk"</a></li>
+          <li><a href="#">John Beolyn: "Why you should look forward to my talk"</a></li>
+          <li><a href="#">John Beolyn: "Why you should look forward to my talk"</a></li>
+        </ul>
+      </div>
+    </div>
+    <p id="footersfooter">
+      FrontWebConf is an example website to be used freely on top of the <a href="http://prismic.io">prismic.io</a> writing-room and content query API.
+      -
       <% if connected? %>
         <%= link_to signout_path do %>Sign out<% end %>
       <% else %>

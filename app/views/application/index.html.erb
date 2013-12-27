@@ -1,31 +1,69 @@
-<form action="/search" method="GET">
-  <input type="text" name="q" value="">
-  <input type="hidden" name="ref" value="<%= @ref %>">
-  <input type="submit" value="Search">
-</form>
-<hr />
-<h2>
-  <%=
-    case @documents.size
-    when 0
-      "No document found"
-    when 1
-      "One document found"
-    else
-      "#{@documents.size} documents found"
-    end
-  %>
-</h2>
+<article id="home" class="container">
 
-<ul>
-  <% @documents.each do |doc| %>
-    <li>
-      <%= link_to doc.slug, link_resolver(@maybe_ref).link_to(doc) %>
-      <%#
-        We could have written document_path(id: doc.id, slug: doc.slug, ref: maybe_ref);
-        but it's better to use the link_resolver, as it allows you to maintain in one place
-        the way all the documents' URLs are supposed to be written, whatever their types.
-      %>
-    </li>
-  <% end %>
-</ul>
+  <section id="introduction" class="jumbotron" style="background: url('http://dummyimage.com/1140x500/d9ddff/eeeeee')">
+    <h1>FrontWebConf - Web is what you need</h1>
+    <p class="dateplace">In San Francisco, CA, on June 12th 2013</p>
+    <div class="row">
+      <div class="col-sm-8">
+        <p class="description">FrontWebConf is a conference for all lovers of the web platform. Whether you use it to make webapps or to compile your code for other platforms, this is where you come to talk about it!</p>
+      </div>
+      <div class="col-sm-4">
+        <p class="cta"><a class="btn btn-primary btn-lg" role="button" href="#">Call to action</a></p>
+      </div>
+    </div>
+  </section>
+
+  <h2 id="speakerstitle">Some speakers you'll see</h2>
+  <%# Random in Ruby is: [1,2,3,4,5].sample(3) %>
+  <section class="row speakers">
+    <% 5.times do |i| %>
+      <div class="col-sm-2 <%= i==0 ? 'col-sm-offset-1' : '' %>">
+        <a href="#">
+          <p>
+            <span data-picture data-alt="John Boelyn">
+              <span data-src="http://dummyimage.com/500x200/000/fff"></span>
+              <span data-src="http://dummyimage.com/165x165/000/fff" data-media="(min-width: 768px)"></span>
+
+              <!-- Fallback content for non-JS browsers. Same img src as the initial, unqualified source element. -->
+              <noscript>
+                  <img src="http://dummyimage.com/500x200/000/fff" alt="John Boelyn">
+              </noscript>
+            </span>
+          </p>
+          <p>John Boelyn</p>
+        </a>
+      </div>
+    <% end %>
+  </section>
+
+  <h2 id="sponsorstitle">Our sponsors</h2>
+  <section class="row sponsors">
+    <h3>Gold</h3>
+    <ul class="list-inline">
+      <li><a href="#"><img src="http://dummyimage.com/200x100/000/fff" alt="John Boelyn"></a></li>
+      <li><a href="#"><img src="http://dummyimage.com/200x100/000/fff" alt="John Boelyn"></a></li>
+    </ul>
+    <h3>Silver</h3>
+    <ul class="list-inline">
+      <li><a href="#"><img src="http://dummyimage.com/150x75/000/fff" alt="John Boelyn"></a></li>
+      <li><a href="#"><img src="http://dummyimage.com/150x75/000/fff" alt="John Boelyn"></a></li>
+      <li><a href="#"><img src="http://dummyimage.com/150x75/000/fff" alt="John Boelyn"></a></li>
+      <li><a href="#"><img src="http://dummyimage.com/150x75/000/fff" alt="John Boelyn"></a></li>
+      <li><a href="#"><img src="http://dummyimage.com/150x75/000/fff" alt="John Boelyn"></a></li>
+    </ul>
+    <h3>Bronze</h3>
+    <ul class="list-inline">
+      <li><a href="#">Company #1</a></li>
+      <li><a href="#">Company #2</a></li>
+      <li><a href="#">Company #3</a></li>
+      <li><a href="#">Company #4</a></li>
+      <li><a href="#">Company #5</a></li>
+      <li><a href="#">Company #6</a></li>
+      <li><a href="#">Company #7</a></li>
+    </ul>
+    <p>
+      <a href="#" class="btn btn-default">Become a sponsor</a>
+    </p>
+  </section>
+
+</article>
