@@ -1,0 +1,16 @@
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+  padding-top: 50px;
+  padding-bottom: 20px;
+}
+
+/* General CSS */
+.page-title {
+	margin-top: 50px;
+	margin-bottom: 80px;
+}
+
+/* Homepage */
+article#home {
+	margin-top: 20px;
+}
