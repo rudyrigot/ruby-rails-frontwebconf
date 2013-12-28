@@ -75,3 +75,87 @@ article#home .sponsors {
 article#home .sponsors li {
 	margin-bottom: 5px;
 }
+
+/* Schedule */
+
+article#schedule .day li.list-group-item {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+article#schedule .day li.list-group-item a {
+	color: black;
+}
+article#schedule .day .time {
+	margin-top: 3em;
+}
+article#schedule .day .photo {
+	text-align: right;
+}
+article#schedule .day .photo img {
+	max-width: 100%;
+}
+article#schedule .day .photo img.double {
+	max-width: 50%;
+}
+article#schedule .titlename h4 {
+	margin-bottom: 0;
+}
+article#schedule .titlename .name {
+	margin-bottom: 0;
+}
+article#schedule .titlename .name,
+article#schedule .titlename .venue {
+	text-align: right;
+	font-style: italic;
+}
+
+/* Speakers */
+
+article#speakers .speaker {
+	text-align: center;
+	margin-top: 50px;
+}
+
+/* Talk */
+article#talk h3 {
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+article#talk .speaker {
+	margin-bottom: 50px;
+}
+article#talk .speaker .name {
+	margin: 0;
+}
+article#talk .speaker .title {
+	font-style: italic;
+}
+article#talk .speaker .photo {
+	text-align: center;
+}
+article#talk .speaker .photo img {
+	max-width: 100%;
+}
+
+/* Venues */
+article#venues #map {
+	margin: 0 20px 20px;
+	height: 300px;
+	background-color: #dcdcdc;
+}
+article#venues #map h4 {
+	text-align: center;
+	padding-top: 100px;
+}
+article#venues #map .photo {
+	text-align: center;
+}
+article#venues .venue {
+	margin-bottom: 30px;
+}
+article#venues .venue .photo {
+	text-align: center;
+}
+article#venues .venue .photo img {
+	max-width: 100%;
+}

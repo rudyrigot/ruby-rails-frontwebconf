@@ -7,6 +7,22 @@ class ApplicationController < ActionController::Base
     @documents = api.form("everything").submit(@ref)
   end
 
+  def about
+    render "article"
+  end
+
+  def schedule
+  end
+
+  def speakers
+  end
+
+  def venues
+  end
+
+  def talk
+  end
+
   # Single-document page action: mostly, setting the @document instance variable, and checking the URL
   def document
     id = params[:id]

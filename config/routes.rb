@@ -58,6 +58,24 @@ StarterRubyRails::Application.routes.draw do
   # GET     /                                           controllers.Application.index(ref: Option[String])
   root 'application#index'
 
+  # # About
+  get '/about', to: 'application#about', as: :about
+
+  # # Schedule
+  get '/schedule', to: 'application#schedule', as: :schedule
+
+  # # Venues
+  get '/venues', to: 'application#venues', as: :venues
+
+  # # Speakers
+  get '/speakers', to: 'application#speakers', as: :speakers
+
+  # # Talk detail
+  get '/talk/:id/:slug', to: 'application#talk', constraints: {id: /[-_a-zA-Z0-9]{16}/}, as: :talk
+
+  # # Article
+  get '/article/:id/:slug', to: 'application#article', constraints: {id: /[-_a-zA-Z0-9]{16}/}, as: :article
+
   # # Document detail
   get '/document/:id/:slug', to: 'application#document', constraints: {id: /[-_a-zA-Z0-9]{16}/}, as: :document
 

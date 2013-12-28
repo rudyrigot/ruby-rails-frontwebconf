@@ -26,10 +26,12 @@
     </div>
     <div class="navbar-collapse collapse" id="top-navbar">
       <ul class="nav navbar-nav">
-        <li><a href="#">Schedule</a></li>
-        <li><a href="#">Speakers</a></li>
+        <li><%= link_to "Schedule", schedule_path(maybe_ref: @maybe_ref) %></li>
+        <li><%= link_to "Speakers", speakers_path(maybe_ref: @maybe_ref) %></li>
+        <li><%= link_to "Venues", venues_path(maybe_ref: @maybe_ref) %></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
+        <li><%= link_to "About", about_path(maybe_ref: @maybe_ref) %></li>
         <li><a href="#">News</a></li>
       </ul>
     </div><!--/.navbar-collapse -->
@@ -61,7 +63,7 @@
     <% end %>
 </div>
 
-  <%= yield %>
+<%= yield %>
 
 <hr>
 

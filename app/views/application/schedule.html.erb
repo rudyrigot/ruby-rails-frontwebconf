@@ -1,0 +1,48 @@
+<article id="schedule" class="container">
+
+  <div class="page-title">
+    <h1>FrontWebConf's Schedule</h1>
+    <p>Being a single-track two-day conference, FrontWebConf has sessions for every kind of enjoyment:</p>
+    <ul>
+      <li>Friday morning: conference talks by the highest-profile experts in the industry</li>
+      <li>Friday afternoon: open space sessions to spread knowledge freely</li>
+      <li>Saturday morning: workshops by the best web-makers out there</li>
+      <li>Saturday afternoon: some more open space sessions, to keep the sharing flowing</li>
+    </ul>
+  </div>
+
+  <h2>Friday June 14th 2013</h2>
+
+  <div class="row day">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <ul class="list-group">
+        <% 10.times do |i| %>
+          <li class="list-group-item">
+            <a href="<%= talk_path(id: "aaaaaaaaaaaaaaaa", slug: "hello", maybe_ref: @maybe_ref) %>">
+              <div class="row">
+                <div class="col-sm-2 col-xs-6 time">
+                  <strong>2pm - 2.50pm</strong>
+                </div>
+                <div class="col-sm-3 col-xs-6 photo">
+                  <% if i % 2 == 0 %>
+                    <img src="http://dummyimage.com/165x165/000/fff" alt="John Boelyn">
+                  <% else %>
+                    <img src="http://dummyimage.com/82x165/000/fff" alt="John Boelyn" class="double"><!--
+                    --><img src="http://dummyimage.com/82x165/222/fff" alt="John Boelyn" class="double">
+                  <% end %>
+                </div>
+                <div class="col-sm-7 col-xs-12 titlename">
+                  <h4>HTML5 APIs</h4>
+                  <p class="name">by John Boelyn, CTO of BiffCo</p>
+                  <p class="venue">at Fort Mason Center</p>
+                  <p>Everybody has probably used a little bit of HTML5 in their work; but do you really, actually know HTML5?</p>
+                </div>
+              </div>
+            </a>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+
+</article>
