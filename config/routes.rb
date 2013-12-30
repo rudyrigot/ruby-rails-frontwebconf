@@ -76,11 +76,14 @@ StarterRubyRails::Application.routes.draw do
   # # Article
   get '/article/:id/:slug', to: 'application#article', constraints: {id: /[-_a-zA-Z0-9]{16}/}, as: :article
 
-  # # Document detail
-  get '/document/:id/:slug', to: 'application#document', constraints: {id: /[-_a-zA-Z0-9]{16}/}, as: :document
+  # # News home
+  get '/news', to: 'application#newshome', as: :newshome
 
   # # Basic search
-  get '/search', to: 'application#search', as: :search
+  get '/news/search', to: 'application#newssearch', as: :newssearch
+
+  # # Document detail
+  get '/news/:id/:slug', to: 'application#newspost', constraints: {id: /[-_a-zA-Z0-9]{16}/}, as: :newspost
 
   # # Prismic.io OAuth - you shouldn't touch those lightly, if you need OAuth2 to keep working with prismic.io
   get '/signin', to: 'prismic_oauth#signin', as: :signin

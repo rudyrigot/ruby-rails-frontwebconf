@@ -1,0 +1,35 @@
+<article id="newslist" class="container">
+	<div class="row">
+		<div class="col-md-3 col-md-offset-9" id="doc-search">
+			<%= render partial: "newssearch" %>
+		</div>
+	</div>
+
+	<% if @results %>
+		<% 4.times do %>
+			<div class="row post">
+				<a href="<%= newspost_path(id: 'aaaaaaaaaaaaaaaa', slug: 'slug', maybe_ref: @maybe_ref) %>">
+					<div class="col-md-3 col-md-offset-2 centeredfluidimage photo">
+						<img src="http://dummyimage.com/250x200/000/fff" alt="John Boelyn">
+					</div>
+					<div class="col-md-5">
+						<h3>This is an article's title</h3>
+						<p class="date">Sept. 13th 2013</p>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vel sapien aliquam, fringilla enim ut, pulvinar urna. Aliquam tincidunt consectetur consectetur. Curabitur ut sem sed nisl suscipit dapibus vel eu leo. Mauris nec erat velit. Mauris posuere feugiat mauris ultrices mollis.</p>
+					</div>
+				</a>
+			</div>
+		<% end %>
+	<% else %>
+		<div id="noresult">
+			<h1>There is no result for xxxxx</h1>
+			<p>Try performing another search:</p>
+			<div class="row">
+				<div class="col-md-4 col-md-offset-4">
+					<%= render partial: "newssearch" %>
+				</div>
+			</div>
+		</div>
+	<% end %>
+
+</article>

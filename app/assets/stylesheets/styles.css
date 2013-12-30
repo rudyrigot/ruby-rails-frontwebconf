@@ -18,6 +18,12 @@ body {
 	padding-top: 10px;
 	margin-top: 15px;
 }
+.centeredfluidimage {
+	text-align: center;
+}
+.centeredfluidimage img {
+	max-width: 100%;
+}
 
 /* Homepage */
 article#home {
@@ -63,12 +69,6 @@ article#home h2 {
 	border-top: 1px solid #eeeeee;
 }
 
-article#home .speakers {
-	text-align: center;
-}
-article#home .speakers img {
-	max-width: 100%;
-}
 article#home .sponsors {
 	text-align: center;
 }
@@ -87,12 +87,6 @@ article#schedule .day li.list-group-item a {
 }
 article#schedule .day .time {
 	margin-top: 3em;
-}
-article#schedule .day .photo {
-	text-align: right;
-}
-article#schedule .day .photo img {
-	max-width: 100%;
 }
 article#schedule .day .photo img.double {
 	max-width: 50%;
@@ -130,12 +124,6 @@ article#talk .speaker .name {
 article#talk .speaker .title {
 	font-style: italic;
 }
-article#talk .speaker .photo {
-	text-align: center;
-}
-article#talk .speaker .photo img {
-	max-width: 100%;
-}
 
 /* Venues */
 article#venues #map {
@@ -153,9 +141,56 @@ article#venues #map .photo {
 article#venues .venue {
 	margin-bottom: 30px;
 }
-article#venues .venue .photo {
-	text-align: center;
+
+/* Article */
+article#article #content {
+	margin-bottom: 50px;
 }
-article#venues .venue .photo img {
-	max-width: 100%;
+
+/* News */
+#doc-search {
+	margin-top: 30px;
+}
+article#newslist .post {
+	margin-top: 80px;
+	padding-bottom: 50px;
+	border-bottom: 1px solid #eeeeee;
+}
+article#newslist .post .date {
+	font-style: italic;
+	color: #555555;
+}
+article#newslist .post:last-child {
+	border-bottom: 0;
+}
+article#newslist .post .photo {
+	margin-bottom: 20px;
+}
+article#newslist .post a {
+	color: black;
+}
+article#newslist .post h3 {
+	margin: 10px 0 0;
+}
+article#newslist #noresult {
+	text-align: center;
+	margin: 60px 0;
+}
+article#newslist #noresult h1 {
+}
+
+article#newspost .content {
+	margin-top: 30px;
+	margin-bottom: 50px;
+}
+article#newspost .photo {
+	margin: 30px 0 50px;
+}
+article#newspost h1 {
+	margin: 30px 0 0;
+}
+article#newspost .date {
+	margin-bottom: 30px;
+	font-style: italic;
+	color: #555555;
 }

@@ -23,6 +23,19 @@ class ApplicationController < ActionController::Base
   def talk
   end
 
+  def newshome
+    @results = true
+    render :newslist
+  end
+
+  def newssearch
+    @results = false
+    render :newslist
+  end
+
+  def newspost
+  end
+
   # Single-document page action: mostly, setting the @document instance variable, and checking the URL
   def document
     id = params[:id]
