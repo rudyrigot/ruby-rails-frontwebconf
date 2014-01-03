@@ -29,6 +29,9 @@ body {
 article#home {
 	margin-top: 20px;
 }
+article#home #introduction {
+	background-position: center top;
+}
 article#home #introduction h1 {
 	font-size: 1.5em;
 }
