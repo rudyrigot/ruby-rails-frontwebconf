@@ -78,6 +78,14 @@ article#home .sponsors {
 article#home .sponsors li {
 	margin-bottom: 5px;
 }
+article#home .sponsors .bronze li {
+	margin: 0;
+	padding: 0 20px;
+	border-left: 1px solid #aaaaaa;
+}
+article#home .sponsors .bronze li:first-child {
+	border-left: 0;
+}
 
 /* Schedule */
 
