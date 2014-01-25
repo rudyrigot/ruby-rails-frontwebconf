@@ -33,12 +33,15 @@ class ApplicationController < ActionController::Base
   end
 
   def schedule
+  	@document = PrismicService.get_document(api.bookmark("schedule"), api, @ref)
   end
 
   def speakers
+  	@document = PrismicService.get_document(api.bookmark("speakers"), api, @ref)
   end
 
   def venues
+  	@document = PrismicService.get_document(api.bookmark("venues"), api, @ref)
   end
 
   def talk

@@ -1,9 +1,6 @@
 <article id="speakers" class="container">
 
-  <div class="page-title">
-    <h1>FrontWebConf's Speakers</h1>
-    <p>All of the industry's top speakers meet for FrontWebConf:</p>
-  </div>
+  <%= render partial: "article", object: @document %>
 
   <div class="row">
     <% 10.times do %>
