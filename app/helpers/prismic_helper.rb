@@ -7,7 +7,39 @@ module PrismicHelper
   # containing only the information you already have without querying more (see DocumentLink documentation)
   def link_resolver(maybe_ref)
     @link_resolver ||= Prismic::LinkResolver.new(maybe_ref){|doc|
-      document_path(id: doc.id, slug: doc.slug, ref: maybe_ref)
+      return '#' if doc.broken?
+      case doc.link_type
+      when "homepage"
+        root_path(ref: maybe_ref)
+      when "article" # This type is special: the URL is built depending on the document's prismic.io bookmark
+        case doc.id
+        when api.bookmark("about")
+          about_path(ref: maybe_ref)
+        when api.bookmark("schedule")
+          schedule_path(ref: maybe_ref)
+        when api.bookmark("speakers")
+          speakers_path(ref: maybe_ref)
+        when api.bookmark("venues")
+          venues_path(ref: maybe_ref)
+        else
+          article_path(id: doc.id, slug: doc.slug, ref: maybe_ref)
+        end
+      when "blog"
+        newspost_path(id: doc.id, slug: doc.slug, ref: maybe_ref)
+      when "footerlinks"
+        root_path(ref: maybe_ref) + "\#footer"
+      when "session"
+        talk_path(ref: maybe_ref) + "\#footer"
+      when "speaker"
+        speakers_path(ref: maybe_ref) + "\#" + doc.id
+      when "sponsor"
+        root_path(ref: maybe_ref) + "\#sponsorstitle"
+      when "venue"
+        venues_path(ref: maybe_ref) + "\#" + doc.id
+      else
+        raise "link_resolver doesn't know how to write URLs for #{doc.link_type} type."
+      end
+
       # maybe_ref is not expected by document path, so it appends a ?ref=maybe_ref to the URL;
       # since maybe_ref is nil when on master ref, it appends nothing.
       # You should do the same for every path method used here in the link_resolver and elsewhere in your app,
