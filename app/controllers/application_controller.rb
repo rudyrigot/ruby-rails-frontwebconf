@@ -4,16 +4,32 @@ class ApplicationController < ActionController::Base
 
   # Homepage action: querying the "everything" form (all the documents, paginated by 20)
   def index
-  	@document = PrismicService.get_document(api.bookmark("homepage"), api, @ref)
-  	@sponsorlink = PrismicService.get_document(api.bookmark("sponsorlink"), api, @ref)
-  	@speakerlink = PrismicService.get_document(api.bookmark("speakerlink"), api, @ref)
-  	@speakers = api.form("speakers").query('[[:d = at(document.tags, ["featured"])]]').submit(@ref).shuffle.first(4)
-  	@silver_sponsors = api.form('sponsors').query('[[:d = at(my.sponsor.level, "silver")]]').submit(@ref)
-  	@bronze_sponsors = api.form('sponsors').query('[[:d = at(my.sponsor.level, "bronze")]]').submit(@ref)
+  	# Retrieving the useful documents from prismic.io
+  	@document = PrismicService.get_document(api.bookmark("homepage"), api, @ref) # the homepage document
+  	@sponsorlink = PrismicService.get_document(api.bookmark("sponsorlink"), api, @ref) # the sponsor link (for the sponsor call-to-action)
+  	@speakerlink = PrismicService.get_document(api.bookmark("speakerlink"), api, @ref) # the speaker link (for the speaker call-to-action)
+  	@speakers = api.form("speakers").query('[[:d = at(document.tags, ["featured"])]]').submit(@ref).shuffle.first(4) ## all featured speakers, shuffled and limited
+  	@silver_sponsors = api.form('sponsors').query('[[:d = at(my.sponsor.level, "silver")]]').submit(@ref) # retrieving all the silver sponsors
+  	@bronze_sponsors = api.form('sponsors').query('[[:d = at(my.sponsor.level, "bronze")]]').submit(@ref) # retrieving all the bronze sponsors
+  	# No need to retrieve the gold sponsors: they're already retrieved in set_footer
   end
 
   def about
-    render "article"
+  	@document = PrismicService.get_document(api.bookmark("about"), api, @ref)
+  end
+
+  def article
+    id = params[:id]
+    slug = params[:slug]
+
+    @document = PrismicService.get_document(id, api, @ref)
+
+    # Checking if the doc / slug combination is right, and doing what needs to be done
+    @slug_checker = PrismicService.slug_checker(@document, slug)
+    if !@slug_checker[:correct]
+      render status: :not_found, file: "#{Rails.root}/public/404", layout: false if !@slug_checker[:redirect]
+      redirect_to blogpost_path(id, @document.slug), status: :moved_permanently if @slug_checker[:redirect]
+    end
   end
 
   def schedule
