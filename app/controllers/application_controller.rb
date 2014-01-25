@@ -1,10 +1,15 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
-  before_action :set_ref, :set_maybe_ref
+  before_action :set_ref, :set_maybe_ref, :set_footer
 
   # Homepage action: querying the "everything" form (all the documents, paginated by 20)
   def index
-    @documents = api.form("everything").submit(@ref)
+  	@document = PrismicService.get_document(api.bookmark("homepage"), api, @ref)
+  	@sponsorlink = PrismicService.get_document(api.bookmark("sponsorlink"), api, @ref)
+  	@speakerlink = PrismicService.get_document(api.bookmark("speakerlink"), api, @ref)
+  	@speakers = api.form("speakers").query('[[:d = at(document.tags, ["featured"])]]').submit(@ref).shuffle.first(4)
+  	@silver_sponsors = api.form('sponsors').query('[[:d = at(my.sponsor.level, "silver")]]').submit(@ref)
+  	@bronze_sponsors = api.form('sponsors').query('[[:d = at(my.sponsor.level, "bronze")]]').submit(@ref)
   end
 
   def about
@@ -64,6 +69,12 @@ class ApplicationController < ActionController::Base
 
 
   ## before_action methods
+
+  def set_footer
+  	@gold_sponsors = api.form('sponsors').query('[[:d = at(my.sponsor.level, "gold")]]').submit(@ref)
+  	@footerlinks = api.form('footerlinks').orderings('[my.footerlinks.priority]').submit(@ref)
+  	@latest_news = api.form('blog').orderings('[my.blog.date desc]').submit(@ref).first(5)
+  end
 
   # Setting @ref as the actual ref id being queried, even if it's the master ref.
   # To be used to call the API, for instance: api.form('everything').submit(@ref)
