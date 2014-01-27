@@ -3,17 +3,25 @@
   <%= render partial: "article", object: @document %>
 
   <div class="row">
-    <% 10.times do %>
-      <div class="col-md-4 col-sm-6 speaker" id="aaaaaaaaaaaaaaaa">
-        <h4>John Boelyn</h4>
-        <p>CTO of BiffCo</p>
-        <p><img src="http://dummyimage.com/165x165/000/fff" alt="John Boelyn"></p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla iaculis, sapien ut dignissim cursus, justo sem bibendum enim, quis lobortis augue ipsum eget turpis. Ut facilisis, nulla at sodales aliquet, lorem mi lacinia nunc, in volutpat nunc augue quis urna. Duis ut metus euismod, faucibus dolor quis, cursus lectus. Duis dictum magna lectus, id gravida leo adipiscing in. Phasellus felis nunc, blandit vel sem eu, rutrum faucibus leo.</p>
-        <h5>Speaks in:</h5>
-        <ul class="list-unstyled">
-          <li><a href="#">HTML5 APIs</a></li>
-          <li><a href="#">HTML5 APIs redux</a></li>
-        </ul>
+    <% @speakers_hash.each do |speaker_hash| %>
+      <% speaker = speaker_hash[:speaker] %>
+      <div class="col-md-4 col-sm-6 speaker" id="<%= speaker.id %>">
+        <h4><%= speaker['speaker.full_name'] ? speaker['speaker.full_name'].as_text : '' %></h4>
+        <p><%= speaker['speaker.title'] ? speaker['speaker.title'].as_text : '' %></p>
+        <p>
+          <%= image_tag (speaker['speaker.photo'] ? speaker['speaker.photo'].get_view('full').url : "http://dummyimage.com/165x165/eeeeee/eeeeee&text=%E2%98%BB"), :alt => (speaker['speaker.full_name'] ? speaker['speaker.full_name'].as_text : '') %>
+        </p>
+        <%= speaker['speaker.bio'] ? speaker['speaker.bio'].as_html_safe(link_resolver(@maybe_ref)) : '' %>
+        <% if speaker_hash[:sessions].length > 0 %>
+          <h5>Speaks in:</h5>
+          <ul class="list-unstyled">
+            <% speaker_hash[:sessions].each do |session| %>
+              <li>
+                <%= link_to session.first_title, link_resolver(@maybe_ref).link_to(session) %>
+              </li>
+            <% end %>
+          </ul>
+        <% end %>
       </div>
     <% end %>
   </div>

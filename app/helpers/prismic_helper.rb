@@ -29,7 +29,7 @@ module PrismicHelper
       when "footerlinks"
         root_path(ref: maybe_ref) + "\#footer"
       when "session"
-        talk_path(ref: maybe_ref) + "\#footer"
+        talk_path(id: doc.id, slug: doc.slug, ref: maybe_ref)
       when "speaker"
         speakers_path(ref: maybe_ref) + "\#" + doc.id
       when "sponsor"

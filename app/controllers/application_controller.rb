@@ -89,6 +89,13 @@ class ApplicationController < ActionController::Base
 
   def speakers
   	@document = PrismicService.get_document(api.bookmark("speakers"), api, @ref)
+
+    @speakers_hash = api.form("speakers").submit(@ref).map{ |speaker|
+      {
+        :speaker => speaker,
+        :sessions => api.form("sessions").query("[[:d = at(my.session.speakers.speaker, \"#{speaker.id}\")]]").submit(@ref)
+      }
+    }
   end
 
   def venues
