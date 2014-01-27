@@ -2,31 +2,48 @@
 
    <%= render partial: "article", object: @document %>
 
-  <h2>Friday June 14th 2013</h2>
+   <% @sorted_sessions_by_day.keys.sort.each do |date| %>
+
+  <h2><%= date.to_time.strftime("%A %B %-dth %Y") %></h2>
 
   <div class="row day">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
       <ul class="list-group">
-        <% 10.times do |i| %>
+        <% @sorted_sessions_by_day[date].each_with_index do | session_obj, i | %>
           <li class="list-group-item">
-            <a href="<%= talk_path(id: "aaaaaaaaaaaaaaaa", slug: "hello", maybe_ref: @maybe_ref) %>">
+            <a href="<%= talk_path(id: session_obj[:document].id, slug: session_obj[:document].slug, maybe_ref: @maybe_ref) %>">
               <div class="row">
                 <div class="col-sm-2 col-xs-6 time">
-                  <strong>2pm - 2.50pm</strong>
+                  <strong>
+                    <%= session_obj[:beginning].to_time.strftime("%l.%M%P").gsub(/\.00/, '') %>
+                    -
+                    <%= session_obj[:end].to_time.strftime("%l.%M%P").gsub(/\.00/, '') %>
+                  </strong>
                 </div>
                 <div class="col-sm-3 col-xs-6 photo centeredfluidimage">
-                  <% if i % 2 == 0 %>
-                    <img src="http://dummyimage.com/165x165/000/fff" alt="John Boelyn">
+                  <% if session_obj[:speakers].length % 2 != 0 %>
+                    <img src="<%= session_obj[:speakers][0]['speaker.photo'] ? session_obj[:speakers][0]['speaker.photo'].get_view('full').url : "http://dummyimage.com/165x165/eeeeee/eeeeee&text=%E2%98%BB" %>" alt="session_obj[:speakers][0]['speaker.full_name'].as_text">
                   <% else %>
-                    <img src="http://dummyimage.com/82x165/000/fff" alt="John Boelyn" class="double"><!--
-                    --><img src="http://dummyimage.com/82x165/222/fff" alt="John Boelyn" class="double">
+                    <img src="<%= session_obj[:speakers][0]['speaker.photo'] ? session_obj[:speakers][0]['speaker.photo'].get_view('half').url : "http://dummyimage.com/165x165/eeeeee/eeeeee&text=%E2%98%BB" %>" alt="session_obj[:speakers][0]['speaker.full_name'].as_text" class="double"><!--
+                    --><img src="<%= session_obj[:speakers][1]['speaker.photo']? session_obj[:speakers][1]['speaker.photo'].get_view('half').url : "http://dummyimage.com/165x165/eeeeee/eeeeee&text=%E2%98%BB" %>" alt="session_obj[:speakers][1]['speaker.full_name'].as_text" class="double">
                   <% end %>
                 </div>
                 <div class="col-sm-7 col-xs-12 titlename">
-                  <h4>HTML5 APIs</h4>
-                  <p class="name">by John Boelyn, CTO of BiffCo</p>
-                  <p class="venue">at Fort Mason Center</p>
-                  <p>Everybody has probably used a little bit of HTML5 in their work; but do you really, actually know HTML5?</p>
+                  <h4><%= session_obj[:document].first_title %></h4>
+                  <p class="name">
+                    by
+                    <%=
+                      session_obj[:speakers].select{|speaker|
+                        speaker['speaker.full_name']
+                      }.map{ |speaker|
+                        speaker['speaker.full_name'].as_text + (speaker['speaker.title'] && session_obj[:speakers].length <2 ? ', '+speaker['speaker.title'].as_text : '')
+                      }.join(" & ".html_safe)
+                    %>
+                  </p>
+                  <% if session_obj[:venue]['venue.name'] %>
+                    <p class="venue">at <%= session_obj[:venue]['venue.name'].as_text %></p>
+                  <% end %>
+                  <%= session_obj[:document]['session.catcher'] ? session_obj[:document]['session.catcher'].as_html_safe(link_resolver(@maybe_ref)) : '' %>
                 </div>
               </div>
             </a>
@@ -35,5 +52,7 @@
       </ul>
     </div>
   </div>
+
+  <% end %>
 
 </article>

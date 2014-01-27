@@ -32,8 +32,59 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # This is the most complex controller action by far, because the page represents a large diversity of
+  # documents, that need querying first (sessions, venues, speakers, ...), but them mostly that need to
+  # be organized with each other.
+  # The goal is to build a Hash with conference days as keys, and an ordered array of the sessions
+  # For the sessions, we'll store them as Hashes, containing:
+  #   * the datetimes of beginning and end,
+  #   * the speaker,
+  #   * document(s),
+  #   * the venue document,
+  #   * and the session document itself.
+  # An extra complexity here is due to the datetime fragments not being implemented in prismic.io yet (we're
+  # rebuilding DateTimes from separate Number fragments)
   def schedule
   	@document = PrismicService.get_document(api.bookmark("schedule"), api, @ref)
+
+    # Retrieving venues
+    @venues_by_id = api.form("venues").submit(@ref).group_by{|venue| venue.id}
+
+    # Retrieving speakers
+    @speakers_by_id = api.form("speakers").submit(@ref).group_by{|speaker| speaker.id}
+
+
+  	@sessions = api.form("sessions").submit(@ref)
+
+  	@sorted_sessions_by_day = @sessions.select { |session| # Getting rid of incompletely authored sessions
+			session['session.date_beginning'] && session['session.hour_beginning'] && session['session.hour_end']
+		}.map { |session|
+			# Getting the date, and creating an empty array if date wasn't known yet
+			date = session['session.date_beginning'].value.to_date
+
+			# Building the Hash representing a session, and returning it as the element to map
+			hour_beginning = session['session.hour_beginning'].value + (session['session.am_pm_beginning'].value == 'pm' ? 12 : 0 )
+			minutes_beginning = session['session.minutes_beginning'] ? session['session.minutes_beginning'].value : 0
+			hour_end = session['session.hour_end'].value + (session['session.am_pm_end'].value == 'pm' ? 12 : 0 )
+			minutes_end = session['session.minutes_end'] ? session['session.minutes_end'].value : 0
+			{
+				:beginning => DateTime.new(date.year, date.month, date.day, hour_beginning, minutes_beginning, 0, '-8'),
+				:end => DateTime.new(date.year, date.month, date.day, hour_end, minutes_end, 0, '-8'),
+				:document => session,
+        :speakers => (session['session.speakers'] ? session['session.speakers'].fragment_list_array.select{ |group|
+          group['speaker']
+        }.map{ |group|
+          @speakers_by_id[group['speaker'].id][0]
+        } : nil), # an array of the speakers, or nil
+        :venue => @venues_by_id[session['session.venue'].id][0] # the venue
+			}
+  	}.group_by { |session_hash| session_hash[:document]['session.date_beginning'].value.to_date } # group by day
+
+  	# All the structure is there, but within each day, the sessions aren't sorted; let's sort them!
+  	@sorted_sessions_by_day.each {|_, session_array|
+  		session_array.sort!{|session1, session2| session1[:beginning] > session2[:beginning] ? 1 : -1}
+  	}
+
   end
 
   def speakers
