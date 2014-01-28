@@ -1,38 +1,42 @@
 <article id="talk" class="container">
 
   <div class="page-title">
-    <h1>HTML5 APIs</h1>
-    <p>On <a href="#">Friday June 14th</a>, in <a href="<%= venues_path(maybe_ref: @maybe_ref) %>">Fort Mason Center</a></p>
+    <h1><%= @document['session.title'] ? @document['session.title'].as_text : '' %></h1>
+    <p>
+      On <%= @document['session.date_beginning'].value.to_date.to_time.strftime("%A %B %-dth") %>
+      <% if @venue %>
+        in <%= link_to @venue.first_title, link_resolver(@maybe_ref).link_to(@venue) %>
+      <% end %>
+    </p>
   </div>
 
   <div class="description row">
   	<div class="col-sm-10 col-sm-offset-1">
-	  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla iaculis, sapien ut dignissim cursus, justo sem bibendum enim, quis lobortis augue ipsum eget turpis. Ut facilisis, nulla at sodales aliquet, lorem mi lacinia nunc, in volutpat nunc augue quis urna. Duis ut metus euismod, faucibus dolor quis, cursus lectus. Duis dictum magna lectus, id gravida leo adipiscing in. Phasellus felis nunc, blandit vel sem eu, rutrum faucibus leo.</p>
-	</div>
-  </div>
-
-  <h3>Speakers</h3>
-
-  <div class="speaker row centeredfluidimage">
-  	<div class="col-sm-3 col-sm-offset-1 photo">
-  		<p><img src="http://dummyimage.com/165x165/000/fff" alt="John Boelyn"></p>
-  	</div>
-  	<div class="col-sm-7">
-  		<p class="name"><strong>John Boelyn</strong></p>
-  		<p class="title">CTO of BiffCo</p>
-  		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla iaculis, sapien ut dignissim cursus, justo sem bibendum enim, quis lobortis augue ipsum eget turpis. Ut facilisis, nulla at sodales aliquet, lorem mi lacinia nunc, in volutpat nunc augue quis urna. Duis ut metus euismod, faucibus dolor quis, cursus lectus. Duis dictum magna lectus, id gravida leo adipiscing in. Phasellus felis nunc, blandit vel sem eu, rutrum faucibus leo.</p>
+  	  <%= @document['session.description'].as_html_safe(link_resolver(@maybe_ref)) %>
   	</div>
   </div>
 
-  <div class="speaker row centeredfluidimage">
-  	<div class="col-sm-3 col-sm-offset-1 photo">
-  		<p><img src="http://dummyimage.com/165x165/000/fff" alt="John Boelyn"></p>
-  	</div>
-  	<div class="col-sm-7">
-  		<p class="name"><strong>John Boelyn</strong></p>
-  		<p class="title">CTO of BiffCo</p>
-  		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla iaculis, sapien ut dignissim cursus, justo sem bibendum enim, quis lobortis augue ipsum eget turpis. Ut facilisis, nulla at sodales aliquet, lorem mi lacinia nunc, in volutpat nunc augue quis urna. Duis ut metus euismod, faucibus dolor quis, cursus lectus. Duis dictum magna lectus, id gravida leo adipiscing in. Phasellus felis nunc, blandit vel sem eu, rutrum faucibus leo.</p>
-  	</div>
-  </div>
+  <% if @speakers %>
+
+    <h3>Speakers</h3>
+
+    <% @speakers.each do |speaker| %>
+
+      <div class="speaker row centeredfluidimage">
+      	<div class="col-sm-3 col-sm-offset-1 photo">
+      		<p>
+            <%= image_tag (speaker['speaker.photo'] ? speaker['speaker.photo'].get_view('full').url : "http://dummyimage.com/165x165/eeeeee/eeeeee&text=%E2%98%BB"), :alt => (speaker['speaker.full_name'] ? speaker['speaker.full_name'].as_text : '') %>
+          </p>
+      	</div>
+      	<div class="col-sm-7">
+      		<p class="name"><strong><%= speaker['speaker.full_name'] ? speaker['speaker.full_name'].as_text : '' %></strong></p>
+          <%= speaker['speaker.title'] ? "<p class=\"title\">#{speaker['speaker.title'].as_text}</p>".html_safe : '' %>
+      		<%= speaker['speaker.bio'] ? speaker['speaker.bio'].as_html_safe(link_resolver(@maybe_ref)) : '' %>
+      	</div>
+      </div>
+
+    <% end%>
+
+  <% end %>
 
 </article>
