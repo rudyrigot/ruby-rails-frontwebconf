@@ -8,15 +8,21 @@
   </div>
 
   <section class="row">
-    <% 3.times do %>
-      <div class="col-sm-6 venue" id="aaaaaaaaaaaaaaaa">
-        <h3>Fort Mason Center</h3>
-        <p class="centeredfluidimage"><img src="http://dummyimage.com/555x165/000/fff" alt="John Boelyn"></p>
+    <% @venues.each do |venue| %>
+      <div class="col-sm-6 venue" id="venue.id">
+        <h3><%= venue.first_title %></h3>
+        <p class="centeredfluidimage">
+          <%= image_tag (venue['venue.photo'] ? venue['venue.photo'].get_view('regular').url : "http://dummyimage.com/555x165/eeeeee/eeeeee") %>
+        </p>
         <div class="description">
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla iaculis, sapien ut dignissim cursus, justo sem bibendum enim, quis lobortis augue ipsum eget turpis. Ut facilisis, nulla at sodales aliquet, lorem mi lacinia nunc, in volutpat nunc augue quis urna. Duis ut metus euismod, faucibus dolor quis, cursus lectus. Duis dictum magna lectus, id gravida leo adipiscing in. Phasellus felis nunc, blandit vel sem eu, rutrum faucibus leo.</p>
+          <%= venue['venue.description'] ? venue['venue.description'].as_html_safe(link_resolver(@maybe_ref)) : '' %>
         </div>
         <p class="address">
-          <a href="#">625 Market street #1000, San Francisco, CA <span class="glyphicon glyphicon-new-window"></span></a>
+          <% full_address = "#{venue.first_title}, #{venue['venue.address'] ? venue['venue.address'].value : ''}, #{venue['venue.city'] ? venue['venue.city'].value : ''}" %>
+          <a href="http://maps.google.com/?q=<%= full_address %>" target="_blank">
+            <span class="addressOnMap"><%= full_address %></span>
+            <span class="glyphicon glyphicon-new-window"></span>
+          </a>
         </p>
       </div>
     <% end %>

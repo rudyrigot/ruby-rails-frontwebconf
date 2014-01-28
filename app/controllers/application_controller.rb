@@ -100,6 +100,8 @@ class ApplicationController < ActionController::Base
 
   def venues
   	@document = PrismicService.get_document(api.bookmark("venues"), api, @ref)
+
+    @venues = api.form("venues").submit(@ref)
   end
 
   def talk
