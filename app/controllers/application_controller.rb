@@ -122,7 +122,7 @@ class ApplicationController < ActionController::Base
   end
 
   def newshome
-    @results = true
+    @documents = api.form("blog").orderings("[my.blog.date desc]").submit(@ref)
     render :newslist
   end
 
