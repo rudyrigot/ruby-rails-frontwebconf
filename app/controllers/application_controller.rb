@@ -127,7 +127,7 @@ class ApplicationController < ActionController::Base
   end
 
   def newssearch
-    @results = false
+    @documents = api.form("blog").query(%([[:d = fulltext(document, "#{params[:q]}")]])).orderings("[my.blog.date desc]").submit(@ref)
     render :newslist
   end
 
