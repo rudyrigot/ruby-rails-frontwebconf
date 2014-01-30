@@ -71,7 +71,7 @@ class ApplicationController < ActionController::Base
 				:beginning => DateTime.new(date.year, date.month, date.day, hour_beginning, minutes_beginning, 0, '-8'),
 				:end => DateTime.new(date.year, date.month, date.day, hour_end, minutes_end, 0, '-8'),
 				:document => session,
-        :speakers => (session['session.speakers'] ? session['session.speakers'].fragment_list_array.select{ |group|
+        :speakers => (session['session.speakers'] ? session['session.speakers'].select{ |group|
           group['speaker']
         }.map{ |group|
           @speakers_by_id[group['speaker'].id][0]
@@ -116,7 +116,7 @@ class ApplicationController < ActionController::Base
       render status: :not_found, file: "#{Rails.root}/public/404", layout: false if !@slug_checker[:redirect]
       redirect_to blogpost_path(id, @document.slug), status: :moved_permanently if @slug_checker[:redirect]
     else
-      @speakers = @document['session.speakers'] ? @document['session.speakers'].fragment_list_array.select{|speaker| speaker['speaker'] }.map {|speaker| PrismicService.get_document(speaker['speaker'].id, api, @ref) } : nil
+      @speakers = @document['session.speakers'] ? @document['session.speakers'].select{|speaker| speaker['speaker'] }.map {|speaker| PrismicService.get_document(speaker['speaker'].id, api, @ref) } : nil
       @venue = @document['session.venue'] ? PrismicService.get_document(@document['session.venue'].id, api, @ref) : nil
     end
   end

@@ -11,15 +11,13 @@
       </div>
       <div class="col-sm-4">
         <p class="cta">
-          <%# Note: for this link to work with internal links, prismic.io's Ruby kit version should be at least 1.0.0.preview.9 %>
-          <%= link_to (@document['homepage.cta_label'] ? @document['homepage.cta_label'].as_text : ''), @document['homepage.cta_link'].url, :class => "btn btn-primary btn-lg", :role => "button" %>
+          <%= link_to (@document['homepage.cta_label'] ? @document['homepage.cta_label'].as_text : ''), @document['homepage.cta_link'].url(link_resolver(@maybe_ref)), :class => "btn btn-primary btn-lg", :role => "button" %>
         </p>
       </div>
     </div>
   </section>
 
   <h2 id="speakerstitle"><%= @document['homepage.speakers_title'] ? @document['homepage.speakers_title'].as_text : '' %></h2>
-  <%# Random in Ruby is: [1,2,3,4,5].sample(3) %>
   <section class="row speakers centeredfluidimage">
     <% @speakers.each_with_index do |speaker, i| %>
       <div class="col-sm-2 <%= i==0 ? 'col-sm-offset-1' : '' %>">
@@ -32,7 +30,7 @@
 
     <% if (@speakerlink && @speakerlink['footerlinks.link'] && @speakerlink['footerlinks.label']) %>
       <div class="col-sm-2">
-        <a href="<%= @speakerlink['footerlinks.link'].url %>">
+        <a href="<%= @speakerlink['footerlinks.link'].url(link_resolver(@maybe_ref)) %>">
           <img src="http://dummyimage.com/165x165/fafafa/000000&text=%3F">
           <p><%= @speakerlink['footerlinks.label'].as_text %></p>
         </a>
@@ -48,7 +46,7 @@
       <% @gold_sponsors.each do |gold| %>
         <% if gold['sponsor.logo'] %>
           <li>
-            <%= gold['sponsor.link'] ? "<a href=\"#{gold['sponsor.link'].try(:url)}\">".html_safe : '' %>
+            <%= gold['sponsor.link'] ? "<a href=\"#{gold['sponsor.link'].url(link_resolver(@maybe_ref))}\">".html_safe : '' %>
               <img src="<%= gold['sponsor.logo'].get_view('large').url %>" alt="<%= gold['sponsor.name'] ? gold['sponsor.name'].as_text : '' %>">
             <%= gold['sponsor.link'] ? "</a>".html_safe : '' %>
           </li>
@@ -60,7 +58,7 @@
       <% @silver_sponsors.each do |silver| %>
         <% if silver['sponsor.logo'] %>
           <li>
-            <%= silver['sponsor.link'] ? "<a href=\"#{silver['sponsor.link'].try(:url)}\">".html_safe : '' %>
+            <%= silver['sponsor.link'] ? "<a href=\"#{silver['sponsor.link'].url(link_resolver(@maybe_ref))}\">".html_safe : '' %>
               <img src="<%= silver['sponsor.logo'].get_view('regular').url %>" alt="<%= silver['sponsor.name'] ? silver['sponsor.name'].as_text : '' %>">
             <%= silver['sponsor.link'] ? "</a>".html_safe : '' %>
           </li>
@@ -71,7 +69,7 @@
     <ul class="list-inline bronze">
       <% @bronze_sponsors.each do |bronze| %>
         <li>
-          <%= bronze['sponsor.link'] ? "<a href=\"#{bronze['sponsor.link'].try(:url)}\">".html_safe : '' %>
+          <%= bronze['sponsor.link'] ? "<a href=\"#{bronze['sponsor.link'].url(link_resolver(@maybe_ref))}\">".html_safe : '' %>
             <%= bronze['sponsor.name'] ? bronze['sponsor.name'].as_text : '' %>
           <%= bronze['sponsor.link'] ? "</a>".html_safe : '' %>
         </li>
@@ -79,8 +77,7 @@
     </ul>
     <% if (@document['homepage.sponsor_cta_label'] && @sponsorlink && @sponsorlink['footerlinks.link']) %>
       <p>
-        <%# Note: for this link to work with internal links, prismic.io's Ruby kit version should be at least 1.0.0.preview.9 %>
-        <%= link_to @document['homepage.sponsor_cta_label'].as_text, @sponsorlink['footerlinks.link'].url, :class => "btn btn-default", :role => "button" %>
+        <%= link_to @document['homepage.sponsor_cta_label'].as_text, @sponsorlink['footerlinks.link'].url(link_resolver(@maybe_ref)), :class => "btn btn-default", :role => "button" %>
       </p>
     <% end %>
   </section>

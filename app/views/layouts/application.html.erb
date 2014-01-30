@@ -79,7 +79,7 @@
           <% @gold_sponsors.each do |gold| %>
             <% if gold['sponsor.logo'] %>
               <li>
-                <%= gold['sponsor.link'] ? "<a href=\"#{gold['sponsor.link'].try(:url)}\">".html_safe : '' %>
+                <%= gold['sponsor.link'] ? "<a href=\"#{gold['sponsor.link'].url(link_resolver(@maybe_ref))}\">".html_safe : '' %>
                   <img src="<%= gold['sponsor.logo'].get_view('regular').url %>" alt="<%= gold['sponsor.name'] ? gold['sponsor.name'].as_text : '' %>">
                 <%= gold['sponsor.link'] ? "</a>".html_safe : '' %>
               </li>
@@ -92,7 +92,7 @@
         <ul>
           <% @footerlinks.each do |link| %>
             <% if link['footerlinks.link'] && link['footerlinks.label'] %>
-              <li><a href="<%= link['footerlinks.link'].try(:url) %>"><%= link['footerlinks.label'].as_text %></a></li>
+              <li><a href="<%= link['footerlinks.link'].url(link_resolver(@maybe_ref)) %>"><%= link['footerlinks.label'].as_text %></a></li>
             <% end %>
           <% end %>
         </ul>

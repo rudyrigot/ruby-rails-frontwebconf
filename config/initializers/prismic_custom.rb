@@ -16,6 +16,26 @@ module Prismic
 			end
 		end
 
+		# Necessary to call the url method the same way on every kind of link
+		# (will be native in the next kit's release)
+		class WebLink
+			def url(link_resolver)
+				@url
+			end
+		end
+
+		class FileLink
+			def url(link_resolver)
+				@url
+			end
+		end
+
+		class ImageLink
+			def url(link_resolver)
+				@url
+			end
+		end
+
 		# You can override any of the kit's features at will, in its HTML serialization for instance.
 		# (The kit provides a basic one, but you get to make the one that best fits your design)
 		# For instance, below is a commented-out overriding of the HTML serialization for images within StructuredText fragments.
