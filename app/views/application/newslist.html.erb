@@ -22,7 +22,7 @@
 		</div>
 	<% end %>
 
-	<% if !@documents || @documents.empty? %>
+	<% if !@documents || @documents.length == 0 %>
 		<div id="noresult">
 			<h1>There is no result<%= params[:q] ? " for #{params[:q]}" : '' %></h1>
 			<p>Try performing another search:</p>

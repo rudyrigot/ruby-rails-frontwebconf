@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   	@document = PrismicService.get_document(api.bookmark("homepage"), api, @ref) # the homepage document
   	@sponsorlink = PrismicService.get_document(api.bookmark("sponsorlink"), api, @ref) # the sponsor link (for the sponsor call-to-action)
   	@speakerlink = PrismicService.get_document(api.bookmark("speakerlink"), api, @ref) # the speaker link (for the speaker call-to-action)
-  	@speakers = api.form("speakers").query('[[:d = at(document.tags, ["featured"])]]').submit(@ref).shuffle.first(4) ## all featured speakers, shuffled and limited
+  	@speakers = api.form("speakers").query('[[:d = at(document.tags, ["featured"])]]').submit(@ref).to_a.shuffle.first(4) ## all featured speakers, shuffled and limited
   	@silver_sponsors = api.form('sponsors').query('[[:d = at(my.sponsor.level, "silver")]]').submit(@ref) # retrieving all the silver sponsors
   	@bronze_sponsors = api.form('sponsors').query('[[:d = at(my.sponsor.level, "bronze")]]').submit(@ref) # retrieving all the bronze sponsors
   	# No need to retrieve the gold sponsors: they're already retrieved in set_footer
