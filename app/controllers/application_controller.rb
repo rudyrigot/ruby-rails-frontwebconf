@@ -1,5 +1,10 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
+
+  # Rescue OAuth errors for some actions
+  rescue_from Prismic::API::PrismicWSAuthError, with: :redirect_to_signin,
+                                                 only: [:index, :download, :dochome, :doc, :docsearch, :getinvolved]
+
   before_action :set_footer
 
   # Homepage action: querying the "everything" form (all the documents, paginated by 20)
@@ -168,10 +173,9 @@ class ApplicationController < ActionController::Base
                     .query(%([[:d = fulltext(document, "#{params[:q]}")]]))
                     .submit(ref)
   end
-  
+
 
   private
-
 
   ## before_action method set_footer
   def set_footer
@@ -179,6 +183,12 @@ class ApplicationController < ActionController::Base
   	@footerlinks = api.form('footerlinks').orderings('[my.footerlinks.priority]').submit(ref)
   	@latest_news = api.form('blog').orderings('[my.blog.date desc]').submit(ref).first(5)
   end
+
+  # Used to rescue issues PrismicWSErrors in controller actions
+  def redirect_to_signin
+    redirect_to signin_path
+  end
+
 
   # Returning the actual ref id being queried, even if it's the master ref.
   # To be used to call the API, for instance: api.form('everything').submit(ref)
@@ -199,15 +209,18 @@ class ApplicationController < ActionController::Base
 
   # Easier access and initialization of the Prismic::API object.
   def api
+    @api ||= PrismicService.init_api(access_token)
+    rescue Prismic::API::PrismicWSAuthError => e
+      reset_access_token!
+    raise e
+  end
+
+  def access_token
     @access_token = session['ACCESS_TOKEN']
-    begin
-      @api ||= PrismicService.init_api(@access_token)
-    rescue Prismic::API::PrismicWSConnectionError
-      # In case there is a connection error, it could come from an expired token,
-      # so let's try it again after discarding the access token
-      session['ACCESS_TOKEN'] = @access_token = nil
-      @api ||= PrismicService.init_api(@access_token)
-    end
+  end
+
+  def reset_access_token!
+    @access_token = session['ACCESS_TOKEN'] = nil
   end
 
 end
