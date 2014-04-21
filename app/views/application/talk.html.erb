@@ -5,14 +5,14 @@
     <p>
       On <%= @document['session.date_beginning'].value.to_date.to_time.strftime("%A %B %-dth") %>
       <% if @venue %>
-        in <%= link_to @venue.first_title, link_resolver(@maybe_ref).link_to(@venue) %>
+        in <%= link_to @venue.first_title, link_resolver(maybe_ref).link_to(@venue) %>
       <% end %>
     </p>
   </div>
 
   <div class="description row">
   	<div class="col-sm-10 col-sm-offset-1">
-  	  <%= @document['session.description'].as_html_safe(link_resolver(@maybe_ref)) %>
+  	  <%= @document['session.description'].as_html_safe(link_resolver(maybe_ref)) %>
   	</div>
   </div>
 
@@ -31,7 +31,7 @@
       	<div class="col-sm-7">
       		<p class="name"><strong><%= speaker['speaker.full_name'] ? speaker['speaker.full_name'].as_text : '' %></strong></p>
           <%= speaker['speaker.title'] ? "<p class=\"title\">#{speaker['speaker.title'].as_text}</p>".html_safe : '' %>
-      		<%= speaker['speaker.bio'] ? speaker['speaker.bio'].as_html_safe(link_resolver(@maybe_ref)) : '' %>
+      		<%= speaker['speaker.bio'] ? speaker['speaker.bio'].as_html_safe(link_resolver(maybe_ref)) : '' %>
       	</div>
       </div>
 

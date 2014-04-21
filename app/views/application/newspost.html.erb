@@ -15,7 +15,7 @@
 			<% if @document['blog.date'] %>
 				<p class="date">On <%= @document['blog.date'].value.to_date.to_time.strftime("%B %-dth %Y") %></p>
 			<% end %>
-			<%= @document['blog.body'] ? @document['blog.body'].as_html_safe(link_resolver(@maybe_ref)) : '' %>
+			<%= @document['blog.body'] ? @document['blog.body'].as_html_safe(link_resolver(maybe_ref)) : '' %>
 		</div>
 	</div>
 

@@ -11,13 +11,13 @@
         <p>
           <%= image_tag (speaker['speaker.photo'] ? speaker['speaker.photo'].get_view('full').url : "http://dummyimage.com/165x165/eeeeee/eeeeee&text=%E2%98%BB"), :alt => (speaker['speaker.full_name'] ? speaker['speaker.full_name'].as_text : '') %>
         </p>
-        <%= speaker['speaker.bio'] ? speaker['speaker.bio'].as_html_safe(link_resolver(@maybe_ref)) : '' %>
+        <%= speaker['speaker.bio'] ? speaker['speaker.bio'].as_html_safe(link_resolver(maybe_ref)) : '' %>
         <% if speaker_hash[:sessions].length > 0 %>
           <h5>Speaks in:</h5>
           <ul class="list-unstyled">
             <% speaker_hash[:sessions].each do |session| %>
               <li>
-                <%= link_to session.first_title, link_resolver(@maybe_ref).link_to(session) %>
+                <%= link_to session.first_title, link_resolver(maybe_ref).link_to(session) %>
               </li>
             <% end %>
           </ul>

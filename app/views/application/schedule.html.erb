@@ -11,7 +11,7 @@
       <ul class="list-group">
         <% @sorted_sessions_by_day[date].each_with_index do | session_obj, i | %>
           <li class="list-group-item">
-            <a href="<%= talk_path(id: session_obj[:document].id, slug: session_obj[:document].slug, maybe_ref: @maybe_ref) %>">
+            <a href="<%= talk_path(id: session_obj[:document].id, slug: session_obj[:document].slug, maybe_ref: maybe_ref) %>">
               <div class="row">
                 <div class="col-sm-2 col-xs-6 time">
                   <strong>
@@ -43,7 +43,7 @@
                   <% if session_obj[:venue]['venue.name'] %>
                     <p class="venue">at <%= session_obj[:venue]['venue.name'].as_text %></p>
                   <% end %>
-                  <%= session_obj[:document]['session.catcher'] ? session_obj[:document]['session.catcher'].as_html_safe(link_resolver(@maybe_ref)) : '' %>
+                  <%= session_obj[:document]['session.catcher'] ? session_obj[:document]['session.catcher'].as_html_safe(link_resolver(maybe_ref)) : '' %>
                 </div>
               </div>
             </a>

@@ -1,28 +1,28 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
-  before_action :set_ref, :set_maybe_ref, :set_footer
+  before_action :set_footer
 
   # Homepage action: querying the "everything" form (all the documents, paginated by 20)
   def index
   	# Retrieving the useful documents from prismic.io
-  	@document = PrismicService.get_document(api.bookmark("homepage"), api, @ref) # the homepage document
-  	@sponsorlink = PrismicService.get_document(api.bookmark("sponsorlink"), api, @ref) # the sponsor link (for the sponsor call-to-action)
-  	@speakerlink = PrismicService.get_document(api.bookmark("speakerlink"), api, @ref) # the speaker link (for the speaker call-to-action)
-  	@speakers = api.form("speakers").query('[[:d = at(document.tags, ["featured"])]]').submit(@ref).to_a.shuffle.first(4) ## all featured speakers, shuffled and limited
-  	@silver_sponsors = api.form('sponsors').query('[[:d = at(my.sponsor.level, "silver")]]').submit(@ref) # retrieving all the silver sponsors
-  	@bronze_sponsors = api.form('sponsors').query('[[:d = at(my.sponsor.level, "bronze")]]').submit(@ref) # retrieving all the bronze sponsors
+  	@document = PrismicService.get_document(api.bookmark("homepage"), api, ref) # the homepage document
+  	@sponsorlink = PrismicService.get_document(api.bookmark("sponsorlink"), api, ref) # the sponsor link (for the sponsor call-to-action)
+  	@speakerlink = PrismicService.get_document(api.bookmark("speakerlink"), api, ref) # the speaker link (for the speaker call-to-action)
+  	@speakers = api.form("speakers").query('[[:d = at(document.tags, ["featured"])]]').submit(ref).to_a.shuffle.first(4) ## all featured speakers, shuffled and limited
+  	@silver_sponsors = api.form('sponsors').query('[[:d = at(my.sponsor.level, "silver")]]').submit(ref) # retrieving all the silver sponsors
+  	@bronze_sponsors = api.form('sponsors').query('[[:d = at(my.sponsor.level, "bronze")]]').submit(ref) # retrieving all the bronze sponsors
   	# No need to retrieve the gold sponsors: they're already retrieved in set_footer
   end
 
   def about
-  	@document = PrismicService.get_document(api.bookmark("about"), api, @ref)
+  	@document = PrismicService.get_document(api.bookmark("about"), api, ref)
   end
 
   def article
     id = params[:id]
     slug = params[:slug]
 
-    @document = PrismicService.get_document(id, api, @ref)
+    @document = PrismicService.get_document(id, api, ref)
 
     # Checking if the doc / slug combination is right, and doing what needs to be done
     @slug_checker = PrismicService.slug_checker(@document, slug)
@@ -45,16 +45,16 @@ class ApplicationController < ActionController::Base
   # An extra complexity here is due to the datetime fragments not being implemented in prismic.io yet (we're
   # rebuilding DateTimes from separate Number fragments)
   def schedule
-  	@document = PrismicService.get_document(api.bookmark("schedule"), api, @ref)
+  	@document = PrismicService.get_document(api.bookmark("schedule"), api, ref)
 
     # Retrieving venues
-    @venues_by_id = api.form("venues").submit(@ref).group_by{|venue| venue.id}
+    @venues_by_id = api.form("venues").submit(ref).group_by{|venue| venue.id}
 
     # Retrieving speakers
-    @speakers_by_id = api.form("speakers").submit(@ref).group_by{|speaker| speaker.id}
+    @speakers_by_id = api.form("speakers").submit(ref).group_by{|speaker| speaker.id}
 
 
-  	@sessions = api.form("sessions").submit(@ref)
+  	@sessions = api.form("sessions").submit(ref)
 
   	@sorted_sessions_by_day = @sessions.select { |session| # Getting rid of incompletely authored sessions
 			session['session.date_beginning'] && session['session.hour_beginning'] && session['session.hour_end']
@@ -88,27 +88,27 @@ class ApplicationController < ActionController::Base
   end
 
   def speakers
-  	@document = PrismicService.get_document(api.bookmark("speakers"), api, @ref)
+  	@document = PrismicService.get_document(api.bookmark("speakers"), api, ref)
 
-    @speakers_hash = api.form("speakers").submit(@ref).map{ |speaker|
+    @speakers_hash = api.form("speakers").submit(ref).map{ |speaker|
       {
         :speaker => speaker,
-        :sessions => api.form("sessions").query("[[:d = at(my.session.speakers.speaker, \"#{speaker.id}\")]]").submit(@ref)
+        :sessions => api.form("sessions").query("[[:d = at(my.session.speakers.speaker, \"#{speaker.id}\")]]").submit(ref)
       }
     }
   end
 
   def venues
-  	@document = PrismicService.get_document(api.bookmark("venues"), api, @ref)
+  	@document = PrismicService.get_document(api.bookmark("venues"), api, ref)
 
-    @venues = api.form("venues").submit(@ref)
+    @venues = api.form("venues").submit(ref)
   end
 
   def talk
     id = params[:id]
     slug = params[:slug]
 
-    @document = PrismicService.get_document(id, api, @ref)
+    @document = PrismicService.get_document(id, api, ref)
 
     # Checking if the doc / slug combination is right, and doing what needs to be done
     @slug_checker = PrismicService.slug_checker(@document, slug)
@@ -122,12 +122,12 @@ class ApplicationController < ActionController::Base
   end
 
   def newshome
-    @documents = api.form("blog").orderings("[my.blog.date desc]").submit(@ref)
+    @documents = api.form("blog").orderings("[my.blog.date desc]").submit(ref)
     render :newslist
   end
 
   def newssearch
-    @documents = api.form("blog").query(%([[:d = fulltext(document, "#{params[:q]}")]])).orderings("[my.blog.date desc]").submit(@ref)
+    @documents = api.form("blog").query(%([[:d = fulltext(document, "#{params[:q]}")]])).orderings("[my.blog.date desc]").submit(ref)
     render :newslist
   end
 
@@ -135,7 +135,7 @@ class ApplicationController < ActionController::Base
     id = params[:id]
     slug = params[:slug]
 
-    @document = PrismicService.get_document(id, api, @ref)
+    @document = PrismicService.get_document(id, api, ref)
 
     # This is how an URL gets checked (with a clean redirect if the slug is one that used to be right, but has changed)
     # Of course, you can change slug_checker in prismic_service.rb, depending on your URL strategy.
@@ -151,7 +151,7 @@ class ApplicationController < ActionController::Base
     id = params[:id]
     slug = params[:slug]
 
-    @document = PrismicService.get_document(id, api, @ref)
+    @document = PrismicService.get_document(id, api, ref)
 
     # This is how an URL gets checked (with a clean redirect if the slug is one that used to be right, but has changed)
     # Of course, you can change slug_checker in prismic_service.rb, depending on your URL strategy.
@@ -166,34 +166,33 @@ class ApplicationController < ActionController::Base
   def search
     @documents = api.form("everything")
                     .query(%([[:d = fulltext(document, "#{params[:q]}")]]))
-                    .submit(@ref)
+                    .submit(ref)
   end
   
 
   private
 
 
-  ## before_action methods
-
+  ## before_action method set_footer
   def set_footer
-  	@gold_sponsors = api.form('sponsors').query('[[:d = at(my.sponsor.level, "gold")]]').submit(@ref)
-  	@footerlinks = api.form('footerlinks').orderings('[my.footerlinks.priority]').submit(@ref)
-  	@latest_news = api.form('blog').orderings('[my.blog.date desc]').submit(@ref).first(5)
+  	@gold_sponsors = api.form('sponsors').query('[[:d = at(my.sponsor.level, "gold")]]').submit(ref)
+  	@footerlinks = api.form('footerlinks').orderings('[my.footerlinks.priority]').submit(ref)
+  	@latest_news = api.form('blog').orderings('[my.blog.date desc]').submit(ref).first(5)
   end
 
-  # Setting @ref as the actual ref id being queried, even if it's the master ref.
-  # To be used to call the API, for instance: api.form('everything').submit(@ref)
-  def set_ref
-    @ref = params[:ref].blank? ? api.master_ref.ref : params[:ref]
+  # Returning the actual ref id being queried, even if it's the master ref.
+  # To be used to call the API, for instance: api.form('everything').submit(ref)
+  def ref
+    @ref ||= maybe_ref || api.master_ref.ref
   end
 
-  # Setting @maybe_ref as the ref id being queried, or nil if it is the master ref.
+  # Returning the ref id being queried, or nil if it is the master ref.
   # To be used where you want nothing if on master, but something if on another release.
   # For instance:
-  #  * you can use it to call Rails routes: document_path(ref: @maybe_ref), which will add "?ref=refid" as a param, but only when needed.
+  #  * you can use it to call Rails routes: document_path(ref: maybe_ref), which will add "?ref=refid" as a param, but only when needed.
   #  * you can pass it to your link_resolver method, which will use it accordingly.
-  def set_maybe_ref
-    @maybe_ref = (params[:ref] != '' ? params[:ref] : nil)
+  def maybe_ref
+    @maybe_ref ||= (params[:ref].blank? ? nil : params[:ref])
   end
 
   ##

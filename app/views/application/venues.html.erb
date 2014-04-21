@@ -15,7 +15,7 @@
           <%= image_tag (venue['venue.photo'] ? venue['venue.photo'].get_view('regular').url : "http://dummyimage.com/555x165/eeeeee/eeeeee") %>
         </p>
         <div class="description">
-          <%= venue['venue.description'] ? venue['venue.description'].as_html_safe(link_resolver(@maybe_ref)) : '' %>
+          <%= venue['venue.description'] ? venue['venue.description'].as_html_safe(link_resolver(maybe_ref)) : '' %>
         </div>
         <p class="address">
           <% full_address = "#{venue.first_title}, #{venue['venue.address'] ? venue['venue.address'].value : ''}, #{venue['venue.city'] ? venue['venue.city'].value : ''}" %>

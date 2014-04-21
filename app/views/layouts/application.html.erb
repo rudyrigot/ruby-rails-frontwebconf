@@ -29,13 +29,13 @@
     </div>
     <div class="navbar-collapse collapse" id="top-navbar">
       <ul class="nav navbar-nav">
-        <li <% if (['schedule', 'talk'].include? action_name) %>class="active"<% end %>><%= link_to "Schedule", schedule_path(maybe_ref: @maybe_ref) %></li>
-        <li <% if (action_name == 'speakers') %>class="active"<% end %>><%= link_to "Speakers", speakers_path(maybe_ref: @maybe_ref) %></li>
-        <li <% if (action_name == 'venues') %>class="active"<% end %>><%= link_to "Venues", venues_path(maybe_ref: @maybe_ref) %></li>
+        <li <% if (['schedule', 'talk'].include? action_name) %>class="active"<% end %>><%= link_to "Schedule", schedule_path(maybe_ref: maybe_ref) %></li>
+        <li <% if (action_name == 'speakers') %>class="active"<% end %>><%= link_to "Speakers", speakers_path(maybe_ref: maybe_ref) %></li>
+        <li <% if (action_name == 'venues') %>class="active"<% end %>><%= link_to "Venues", venues_path(maybe_ref: maybe_ref) %></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li <% if (action_name == 'about') %>class="active"<% end %>><%= link_to "About", about_path(maybe_ref: @maybe_ref) %></li>
-        <li <% if (action_name.start_with? "news") %>class="active"<% end %>><%= link_to "News", newshome_path(maybe_ref: @maybe_ref) %></li>
+        <li <% if (action_name == 'about') %>class="active"<% end %>><%= link_to "About", about_path(maybe_ref: maybe_ref) %></li>
+        <li <% if (action_name.start_with? "news") %>class="active"<% end %>><%= link_to "News", newshome_path(maybe_ref: maybe_ref) %></li>
       </ul>
     </div><!--/.navbar-collapse -->
   </div>

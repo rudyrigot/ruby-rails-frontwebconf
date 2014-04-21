@@ -57,6 +57,16 @@ module PrismicHelper
     connected? || PrismicService.access_token
   end
 
+  # Return the actual used reference
+  def ref
+    @ref ||= maybe_ref || api.master_ref.ref
+  end
+
+  # Return the set reference
+  def maybe_ref
+    @maybe_ref ||= (params[:ref].blank? ? nil : params[:ref])
+  end
+
   # Allows to call api directly in the view
   # (to check the bookmarks, for instance, you shouldn't query in the view!)
   def api
